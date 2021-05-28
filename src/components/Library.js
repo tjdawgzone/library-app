@@ -1,48 +1,29 @@
 import '../App.css';
-import React ,{useState} from 'react'
+import React ,{useState,useEffect,useContext} from 'react'
 import {Button, TextField} from '@material-ui/core'
+import LibraryList from './LibraryList.js'
+import {LibraryContext} from '../contexts/libraryContext'
 
 function Library(){
-    const [book,setBook] = useState(null);
+    const {myBooks,setMyBooks} = useContext(LibraryContext);
 
-    const add = (()=>{
-        let arr = book.split(',')
-        let titleAdd = arr[0];
-        let authorAdd = arr[1];
-        fetch("http://localhost:8000/add", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ titleAdd, authorAdd }),
-        });
-      })
+    document.body.style='background:#ededed;';
+
+    useEffect(()=>{
+      fetch("http://localhost:8000/library")
+      .then((resp) => {
+        return resp.json();
+        })
+        .then((obj) => {
+            setMyBooks(obj);
+        })
+    },[])
     
-      const deleteBook = (()=>{
-        console.log(book)
-        fetch("http://localhost:8000/delete", {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({book}),
-        });
-      })
 
     return (
-        <div class="center"> 
-          <p>For adding books: title,author</p>
-          <TextField onChange={(evt)=>{
-            setBook(evt.target.value)
-          }} label="Add Book" onKeyDown={(evt)=>{
-            if(evt.key==="Enter"){
-                add();
-            }
-            }}></TextField>
-            <br/>
-          <TextField onChange={(evt)=>{
-            setBook(evt.target.value)
-          }} label="Delete Book" onKeyDown={(evt)=>{
-            if(evt.key==="Enter"){
-                deleteBook();
-            }
-            }}></TextField>
+        <div> 
+          <h1 class="centered">Here are your books...</h1>
+          <LibraryList/>
             <br/>
         </div>
     );
