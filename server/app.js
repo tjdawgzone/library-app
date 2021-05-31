@@ -34,6 +34,32 @@ app.delete('/delete',async (req,res)=>{
   res.send("Success!");
 })
 
+app.put('/edit/title',async (req,res)=>{
+  console.log(JSON.stringify(req.body));
+  console.log("activatedTitle")
+  const booksRef = db.collection('books');
+  const snapshot = await booksRef.get();
+  snapshot.forEach(async doc => {
+    if(doc.data().volumeInfo.title===req.body.title){
+      const res = await db.collection('books').doc(doc.id).update({"volumeInfo.title":req.body.newTitle});
+    };
+  });
+  res.send("Success!");
+})
+
+app.put('/edit/author',async (req,res)=>{
+  console.log(JSON.stringify(req.body));
+  console.log("activatedAuthor")
+  const booksRef = db.collection('books');
+  const snapshot = await booksRef.get();
+  snapshot.forEach(async doc => {
+    if(doc.data().volumeInfo.title===req.body.title){
+      const res = await db.collection('books').doc(doc.id).update({"volumeInfo.authors":[req.body.newAuthor]});
+    };
+  });
+  res.send("Success!");
+})
+
 app.get('/library', async (req, res) => {
   const bookList = [];
   const booksRef = db.collection('books');

@@ -4,7 +4,7 @@ import {ResultsContext} from '../contexts/resultsContext'
 
 function ResultList(){
   const {results,setResults} = useContext(ResultsContext);
-  const [remove, setRemove] = useState(null)
+  const [remove, setRemove] = useState(null);
 
     useEffect(()=>{
       if(remove!==null){
@@ -29,7 +29,7 @@ function ResultList(){
     })
 
     const ratingDisplay = ((input)=>{
-        if(input!=null){
+        if(input!==null){
         const roundedInput=Math.round(input);
         let x = "Rating: ";
         let i = 0;
@@ -70,7 +70,7 @@ function ResultList(){
     const displayResult = ((result,index) => {
         return(
         <div style={{padding:12,justifyContent:"center"}}>
-        <Card elevation={5} style={{width: '30vw',height: '25vw'}}>
+        <Card elevation={5} style={{width: '30vw',height: '20vw'}}>
         <h2 style={{paddingTop:"10%"}}>{result.volumeInfo.title}</h2>
         <h3 >{formatAuthor(result.volumeInfo.authors)}</h3>
         <p>{ratingDisplay(result.volumeInfo.averageRating)}</p>
